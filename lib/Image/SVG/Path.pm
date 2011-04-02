@@ -4,7 +4,7 @@ require Exporter;
 @EXPORT_OK = qw/extract_path_info/;
 use warnings;
 use strict;
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -156,14 +156,11 @@ sub extract_path_info
             if ($element->{type} eq 'moveto') {
                 if ($element->{position} eq 'relative') {
                     my $ip = $options_ref->{initial_position};
-                    if (! $ip) {
-                        croak "You have asked me to eliminate the relative positions in the path, but the initial position of the curve is relative and you did not supply a value for \"initial_position\"";
-                    }
-                    elsif (ref $ip ne 'ARRAY' ||
-                           scalar @$ip != 2) {
-                        croak "The initial position you supplied doesn't look like a pair of coordinates";
-                    }
-                    else {
+                    if ($ip) {
+                        if (ref $ip ne 'ARRAY' ||
+                            scalar @$ip != 2) {
+                            croak "The initial position you supplied doesn't look like a pair of coordinates";
+                        }
                         add_coords ($element->{point}, $ip);
                     }
                 }
@@ -210,7 +207,7 @@ sub extract_path_info
 
 __END__
 
-=head1 Image::SVG::Path
+=head1 NAME
 
 Image::SVG::Path - read the "d" attribute of an SVG path
 
@@ -223,6 +220,8 @@ series of steps. SVG means "scalable vector graphics" and it is a
 standard of the W3 consortium. See L<http://www.w3.org/TR/SVG/> for
 the full specification. See L<http://www.w3.org/TR/SVG/paths.html> for
 the specification for paths.
+
+=head1 FUNCTIONS
 
 =head2 extract_path_info
 
@@ -296,11 +295,11 @@ If the type is "moveto", the hash contains one more field, "point",
 which is the point to move to as an array reference containing the x
 and y coordinates.
 
-If the type is "cubic bezier", the hash contains three more fields,
+If the type is "cubic-bezier", the hash contains three more fields,
 C<control1>, C<control2> and C<end>, each array references containing
 the x and y coordinates of the first and second control points and the
 end point of the Bezier curve respectively. (The start point of the
-curve is the end point of the previous part of the path).
+curve is the end point of the previous part of the path.)
 
 If the type is "shortcut-cubic-bezier", the hash contains two more
 fields, C<control2> and C<end>. C<control2> is the second control
@@ -327,10 +326,6 @@ If this is set to a true value, it changes relative to absolute
 positions. For example a curve marked with "c" is changed to the
 equivalent "C" curve. 
 
-If this is set to a true value, if the first command is a relative
-moveto (an "m" moveto rather than an "M" moveto), you also need to
-supply the initial position.
-
 =item initial_position
 
 The initial position of the path for the case that the path begins
@@ -338,8 +333,10 @@ with a relative moveto rather than an absolute one.
 
 =item no_shortcuts
 
-If this is set to a true value then shortcuts ("S" and "s" curves) are
-changed into the equivalent "C" and "c" curves.
+If this is set to a true value then shortcuts ("S" curves) are changed
+into the equivalent "C" curves. A deficiency of this is that it only
+works in combination with the "absolute" option, otherwise it does
+nothing.
 
 =item verbose
 
@@ -350,19 +347,31 @@ is doing as it parses the path.
 
 =head1 BUGS
 
-=head2 Only cubic bezier curves
+=over
+
+=item Only cubic bezier curves
 
 Right now the module only deals with cubic bezier curves. It doesn't
 deal with quadratic bezier curves, elliptical arcs, or lines. That is
 because I haven't come across any of these in the SVG files I have
 looked at.
 
-=head2 Doesn't use the grammar
+=item Doesn't use the grammar
 
 There is a grammar for the paths in the W3 specification. See
 L<http://www.w3.org/TR/SVG/paths.html#PathDataBNF>. However, this
 module doesn't use that grammar, it just hacks up the path using
 regexes.
+
+=back
+
+=head1 EXPORTS
+
+The module exports L</extract_path_info> on demand, so you need to say
+
+     use Image::SVG::Path 'extract_path_info';
+
+to import it into your namespace.
 
 =head1 AUTHOR
 
