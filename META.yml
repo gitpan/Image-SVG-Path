@@ -1,9 +1,10 @@
 --- #YAML:1.0
 name:               Image-SVG-Path
-version:            0.02
-abstract:           ~
-author:  []
-license:            unknown
+version:            0.03
+abstract:           read the "d" attribute of an SVG path
+author:
+    - Ben Bullock <bkb@cpan.org>
+license:            perl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0

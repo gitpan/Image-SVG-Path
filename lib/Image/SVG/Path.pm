@@ -4,7 +4,7 @@ require Exporter;
 @EXPORT_OK = qw/extract_path_info/;
 use warnings;
 use strict;
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -80,7 +80,7 @@ sub extract_path_info
     };
     # Deal with the rest of the path.
     my @curves;
-    while ($curves =~ /([cs])\s*([-0-9.,\s]+)/gi) {
+    while ($curves =~ /([cslqtahv])\s*([-0-9.,\s]+)/gi) {
         push @curves, [$1, $2];
     }
     if (@curves == 0) {
@@ -137,6 +137,23 @@ sub extract_path_info
                 };
             }
         }
+        elsif (uc $curve_type eq 'L') {
+            my $expect_numbers = 2;
+            if (@numbers % $expect_numbers != 0) {
+                croak "Wrong number of values for an L command " .
+                    scalar @numbers . " in '$path'";
+            }
+            my $position = position_type ($curve_type);
+            for (my $i = 0; $i < @numbers / $expect_numbers; $i++) {
+                my $offset = $expect_numbers * $i;
+                push @path_info, {
+                    type => 'line-to',
+                    position => $position,
+                    end => [@numbers[$offset, $offset + 1]],
+                    svg_key => $curve_type,
+                }
+            }
+        }
         else {
             croak "I don't know what to do with a curve type '$curve_type'";
         }
@@ -159,7 +176,7 @@ sub extract_path_info
                     if ($ip) {
                         if (ref $ip ne 'ARRAY' ||
                             scalar @$ip != 2) {
-                            croak "The initial position you supplied doesn't look like a pair of coordinates";
+                            croak "The initial position supplied doesn't look like a pair of coordinates";
                         }
                         add_coords ($element->{point}, $ip);
                     }
@@ -306,25 +323,28 @@ fields, C<control2> and C<end>. C<control2> is the second control
 point, and C<end> is the end point. The first control point is got by
 reflecting the second control point of the previous curve around the
 end point of the previous curve (the start point of the current
-curve). If you find that confusing then you might want to switch on
-the L</no_shortcuts> option which will automatically replace shortcut
-cubic bezier curves with the normal kind, by calculating the first
-control point for you.
+curve). 
 
-There is a second argument of a hash reference which you can use to
-make a request.
+There is also an option L</no_shortcuts> which automatically replaces
+shortcut cubic bezier curves with the normal kind, by calculating the
+first control point.
+
+There is a second argument to extract_path_info. The second argument
+is a hash reference. This contains options for the extraction. For
+example,
 
     my @path_info = extract_path_info ($path, {absolute => 1});
 
-You can set a combination of the following values:
+The following options may be chosen by adding them to the hash
+reference:
 
 =over
 
 =item absolute
 
-If this is set to a true value, it changes relative to absolute
-positions. For example a curve marked with "c" is changed to the
-equivalent "C" curve. 
+If the hash element C<absolute> is set to a true value, relative
+positions are changed to absolute. For example a "c" curve is changed
+to the equivalent "C" curve.
 
 =item initial_position
 
@@ -333,15 +353,15 @@ with a relative moveto rather than an absolute one.
 
 =item no_shortcuts
 
-If this is set to a true value then shortcuts ("S" curves) are changed
-into the equivalent "C" curves. A deficiency of this is that it only
-works in combination with the "absolute" option, otherwise it does
-nothing.
+If the hash element C<no_shortcuts> is set to a true value then
+shortcuts ("S" curves) are changed into the equivalent "C" curves. A
+deficiency of this is that it only works in combination with the
+"absolute" option, otherwise it does nothing.
 
 =item verbose
 
-If this is set to a true value, it prints out messages about what it
-is doing as it parses the path.
+If this is set to a true value, C<extract_path_info> prints out
+informative messages about what it is doing as it parses the path.
 
 =back
 
@@ -349,29 +369,29 @@ is doing as it parses the path.
 
 =over
 
-=item Only cubic bezier curves
+=item Only cubic bezier curves and lines
 
-Right now the module only deals with cubic bezier curves. It doesn't
-deal with quadratic bezier curves, elliptical arcs, or lines. That is
-because I haven't come across any of these in the SVG files I have
-looked at.
+This module only parses movetos (m elements), cubic bezier curves (s
+and c elements) and lines (l elements). It does not parse quadratic
+bezier curves (q and t elements), elliptical arcs (a elements), or
+horizontal and vertical linetos (h and v elements).
 
-=item Doesn't use the grammar
+=item Does not use the grammar
 
 There is a grammar for the paths in the W3 specification. See
 L<http://www.w3.org/TR/SVG/paths.html#PathDataBNF>. However, this
-module doesn't use that grammar, it just hacks up the path using
+module does not use that grammar. Instead it hacks up the path using
 regexes.
 
 =back
 
 =head1 EXPORTS
 
-The module exports L</extract_path_info> on demand, so you need to say
+The module exports L</extract_path_info> on demand, so 
 
      use Image::SVG::Path 'extract_path_info';
 
-to import it into your namespace.
+imports it.
 
 =head1 AUTHOR
 
@@ -379,8 +399,8 @@ Ben Bullock, <bkb@cpan.org>
 
 =head1 LICENCE
 
-You can use, modify and distribute this Perl module and all the
-associated files under either the Perl artistic licence or the GNU
-General Public Licence.
+This module and all associated files can be used, modified and
+distributed under either the Perl artistic licence or the GNU General
+Public Licence.
 
 =cut
