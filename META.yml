@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Image-SVG-Path
-version:            0.03
+version:            0.04
 abstract:           read the "d" attribute of an SVG path
 author:
     - Ben Bullock <bkb@cpan.org>

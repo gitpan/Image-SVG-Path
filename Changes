@@ -1,3 +1,8 @@
-0.03
+Version: 0.03
+%%Changes:
 
-Added lines (L element).
+Added all the different commands to the regex.
+
+Put under Git version control.
+
+%%

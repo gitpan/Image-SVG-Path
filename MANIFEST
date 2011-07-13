@@ -5,3 +5,4 @@ t/Image-SVG-Path.t
 META.yml                                 Module meta-data (added by MakeMaker)
 Changes
 README
+test-reverse.pl
