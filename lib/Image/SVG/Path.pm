@@ -1,9 +1,10 @@
 package Image::SVG::Path;
-use parent Exporter;
-our @EXPORT_OK = qw/extract_path_info reverse/;
 use warnings;
 use strict;
-our $VERSION = 0.04;
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw/extract_path_info reverse/;
+our $VERSION = 0.05;
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
