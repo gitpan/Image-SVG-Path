@@ -4,7 +4,7 @@ use strict;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/extract_path_info reverse_path create_path_string/;
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -459,9 +459,9 @@ informative messages about what it is doing as it parses the path.
 
 =back
 
-=head2 reverse
+=head2 reverse_path
 
-    my $reverse_path = reverse ($path);
+    my $reverse_path = reverse_path ($path);
 
 Make an SVG path which is the exact reverse of the input.
 
