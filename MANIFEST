@@ -1,9 +1,11 @@
+Changes
+lib/Image/SVG/.#Path.pm
 lib/Image/SVG/Path.pm
 Makefile.PL
 MANIFEST			This list of files
-t/Image-SVG-Path.t
-META.yml                                 Module meta-data (added by MakeMaker)
-Changes
+MANIFEST.SKIP
 README
+t/Image-SVG-Path.t
 test-reverse.pl
+META.yml                                 Module YAML meta-data (added by MakeMaker)
 META.json                                Module JSON meta-data (added by MakeMaker)
