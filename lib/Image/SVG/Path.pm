@@ -4,7 +4,7 @@ use strict;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/extract_path_info reverse_path create_path_string/;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -261,6 +261,12 @@ sub extract_path_info
                     }
                 }
                 $abs_pos = $element->{point};
+            }
+            elsif ($element->{type} eq 'line-to') {
+                if ($element->{position} eq 'relative') {
+                    add_coords ($element->{end},      $abs_pos);
+                }
+                $abs_pos = $element->{end};
             }
             elsif ($element->{type} eq 'cubic-bezier') {
                 if ($element->{position} eq 'relative') {

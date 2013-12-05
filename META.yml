@@ -21,4 +21,4 @@ requires: {}
 resources:
   bugtracker: https://github.com/benkasminbullock/Image-SVG-Path/issues
   repository: https://github.com/benkasminbullock/Image-SVG-Path
-version: 0.09
+version: 0.10
