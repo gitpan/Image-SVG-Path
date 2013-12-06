@@ -1,5 +1,5 @@
 ---
-abstract: "read the \"d\" attribute of an SVG path"
+abstract: "reasd the \"d\" attribute of an SVG path"
 author:
   - 'Ben Bullock <bkb@cpan.org>'
 build_requires:
@@ -21,4 +21,4 @@ requires: {}
 resources:
   bugtracker: https://github.com/benkasminbullock/Image-SVG-Path/issues
   repository: https://github.com/benkasminbullock/Image-SVG-Path
-version: 0.10
+version: 0.11

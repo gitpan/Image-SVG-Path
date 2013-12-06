@@ -1,5 +1,5 @@
 {
-   "abstract" : "read the \"d\" attribute of an SVG path",
+   "abstract" : "reasd the \"d\" attribute of an SVG path",
    "author" : [
       "Ben Bullock <bkb@cpan.org>"
    ],
@@ -43,5 +43,5 @@
          "url" : "https://github.com/benkasminbullock/Image-SVG-Path"
       }
    },
-   "version" : "0.10"
+   "version" : "0.11"
 }

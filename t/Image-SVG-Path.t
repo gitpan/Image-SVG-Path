@@ -25,6 +25,38 @@ is ($path2_info[1]->{position}, 'relative');
 is ($path2_info[1]->{end}->[0], 4);
 is ($path2_info[1]->{end}->[1], 5);
 
+my @path2_info_abs = extract_path_info ($path2, {absolute => 1});
+
+is ($path2_info_abs[1]->{end}->[0], 6);
+is ($path2_info_abs[1]->{end}->[1], 8);
+
+my $path3 = 'M6.93,103.36c3.61-2.46,6.65-6.21,6.65-13.29c0-1.68-1.36-3e-3-3.03-3.03s-3.03,1.36-3.03,3.03s1.36,3.03,3.03,3.03C15.17,93.1,10.4,100.18,6.93,103.36z';
+
+eval {
+    my @path3_info = extract_path_info ($path3);
+};
+ok (! $@, "parse exponential");
+
+TODO: {
+    local $TODO = 'implicit moveto/lineto combis';
+    my $implicit = 'M 0,0 -1.733,-6.165';
+    my @implicit_info;
+    eval {
+	@implicit_info = extract_path_info ($implicit);
+    };
+    ok (! $@, "parse implicit OK");
+    is ($implicit_info[1]{type}, 'line-to', "Got lineto from implicit");
+    is ($implicit_info[1]{position}, "absolute");
+    my $lc_implicit = lc $implicit;
+    my @lc_implicit_info;
+    eval {
+	@lc_implicit_info = extract_path_info ($lc_implicit);
+    };
+    ok (! $@, "parse implicit OK");
+    is ($lc_implicit_info[1]{type}, 'line-to', "Got lineto from implicit");
+    is ($lc_implicit_info[1]{position}, "relative");
+}
+
 done_testing ();
 exit;
 
