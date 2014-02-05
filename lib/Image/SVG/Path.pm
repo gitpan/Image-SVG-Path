@@ -4,7 +4,7 @@ use strict;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/extract_path_info reverse_path create_path_string/;
-our $VERSION = '0.13';
+our $VERSION = '0.15';
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -435,7 +435,7 @@ SVG <path> element and turns it into a simpler series of steps.
 
 For example, an SVG <path> element might take the form
 
-<path d="M9.6,20.25c0.61,0.37,3.91,0.45,4.52,0.34c2.86-0.5,14.5-2.09,21.37-2.64c0.94-0.07,2.67-0.26,3.45,0.04"/>
+    <path d="M9.6,20.25c0.61,0.37,3.91,0.45,4.52,0.34c2.86-0.5,14.5-2.09,21.37-2.64c0.94-0.07,2.67-0.26,3.45,0.04"/>
 
 Using an XML parser, such as L<XML::Parser>,
 

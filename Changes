@@ -1,5 +1,13 @@
 Revision history for perl module Image::SVG::Path
 
+0.15 2014-02-05
+
+* Add MIN_PERL_VERSION in "Makefile.PL".
+
+0.14 2013-12-24
+
+* CPANTS fixes
+
 0.13 2013-12-07
 
 * Add support for q, t, a, h and v controls.
