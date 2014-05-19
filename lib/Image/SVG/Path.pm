@@ -4,7 +4,7 @@ use strict;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/extract_path_info reverse_path create_path_string/;
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 use Carp;
 
 # Return "relative" or "absolute" depending on whether the command is
@@ -184,7 +184,7 @@ sub extract_path_info
     }
     # Deal with the rest of the path.
     my @curves;
-    while ($curves =~ /([cslqtahvz])\s*($numbers_re)/gi) {
+    while ($curves =~ /\G([cslqtahvzm])\s*($numbers_re)/gi) {
         push @curves, [$1, $2];
     }
     for my $curve_data (@curves) {
@@ -347,6 +347,19 @@ sub extract_path_info
 	    @numbers;
 	    push @path_info, \%arc;
         }
+	elsif (uc $curve_type eq 'M') {
+	    my $position = position_type ($curve_type);
+	    if (@numbers != 2) {
+		croak "Need 2 numbers for move to";
+	    }
+	    push @path_info, {
+		type => 'moveto',
+		name => 'moveto',
+		position => $position,
+		point => [@numbers],
+		svg_key => $curve_type,
+	    };
+	}
         else {
             croak "I don't know what to do with a curve type '$curve_type'";
         }
