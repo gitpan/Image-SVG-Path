@@ -12,7 +12,7 @@
                         
 
 
-This is the README for Image::SVG::Path version 0.18.
+This is the README for Image::SVG::Path version 0.19.
 
 Image::SVG::Path is a "module" for the Perl computer programming language, a
 library of computer code to install on a computer.  This document contains four
@@ -59,10 +59,8 @@ Using an XML parser, such as "XML::Parser",
     }
 
 SVG means "scalable vector graphics" and it is a standard of the W3
-consortium. See "http://www.w3.org/TR/SVG/" for the full
-specification. See "http://www.w3.org/TR/SVG/paths.html" for the
-specification for paths. Although SVG is a type of XML, the text in
-the d attribute of SVG paths is not in the XML format but in a more
+consortium. See "SVG standards" for details.  Although SVG is a type
+of XML, the text in the "d" attribute of SVG paths is not XML but a
 condensed form using single letters and numbers. This module is a
 parser for that condensed format.
 
@@ -96,11 +94,11 @@ If you have the App::cpanminus installer, you may prefer
 
     cpanm Image::SVG::Path
 
-To install the module from the source file, Image-SVG-Path-0.18.tar.gz, follow
+To install the module from the source file, Image-SVG-Path-0.19.tar.gz, follow
 this sequence of commands:
 
-    tar xfz Image-SVG-Path-0.18.tar.gz
-    cd Image-SVG-Path-0.18
+    tar xfz Image-SVG-Path-0.19.tar.gz
+    cd Image-SVG-Path-0.19
     perl Makefile.PL
     make
     make install
@@ -125,6 +123,6 @@ repository on github at
 
 -----------------------------------------------------------------------------
 
-This README was written on Mon May 19 14:06:41 2014.
+This README was written on Wed May 21 11:25:35 2014.
 
 -----------------------------------------------------------------------------
